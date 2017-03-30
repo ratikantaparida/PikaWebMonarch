@@ -1,0 +1,372 @@
+﻿<div cg-busy="{promise:myPromise,message:busymsg,backdrop:true}">
+    <div id="page-title">
+        <h2>Store Setup</h2>
+        <p>Sort description.</p>
+    </div>
+    <div class="content-box pad25A">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="dummy-logo" ng-show="imgData.length<=0 && storeData.imageUrl.length<=0">
+                    <span>Your Store Logo</span>
+                </div>
+                <div class="fileinput fileinput-new" data-provides="fileinput" ng-show="imgData.length>0 || storeData.imageUrl.length>0">
+                    <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;">
+                        <img alt="" data-ng-src="{{imgData}}" class="photo" ng-show="imgData.length>0" />
+                        <img alt="" data-ng-src="{{storeData.imageUrl}}}" class="photo" ng-show="storeData.imageUrl.length>0" />
+                    </div>
+                </div>
+                <div ng-hide="EDIT==false">
+                    <input type="file" style="display: none;" id="imgupload" name="file" accept="image/*" onchange="angular.element(this).scope().convertImg(this)">
+                    <button class="btn btn-info btn-sm" onclick="document.getElementById('imgupload').click();"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;{{imgData.length>0 || storeData.imageUrl.length>0?'Change':'Select Image'}}</button>
+                    <button class="btn btn-warning btn-sm" ng-click="imgData='';storeData.imageUrl='';" ng-show="imgData.length>0 || storeData.imageUrl.length>0">Remove</button>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div ng-show="EDIT==false">
+                    <h2 class="invoice-client mrg10T">Store Info:</h2>
+                    <h5>{{storeData.contactName}}</h5>
+                    <address class="invoice-address">
+                        <i class="glyph-icon icon-envelope-o"></i> {{storeData.email}}
+                        <br>
+                        <i class="glyph-icon icon-phone"></i> {{storeData.contactNumber}}
+                        <br>
+                        <i class="glyph-icon icon-globe"></i> <a href="{{storeData.website}}" target="_blank">{{storeData.website}}</a>
+                        <br>
+                        <i class="glyph-icon icon-twitter"></i> <a href="{{storeData.twitter_Url}}" target="_blank">{{storeData.twitter_Url}}</a>
+                        <br>
+                        <i class="glyph-icon icon-money"></i> {{storeData.currencyDesc}}
+                        <br>
+                        <i class="glyph-icon icon-calendar"></i> {{storeData.timezoneDesc}}
+                    </address>
+                </div>
+                <div class="panel" ng-hide="EDIT==false">
+                    <div class="panel-body">
+                        <div class="example-box-wrapper">
+                            <form class="form-horizontal bordered-row" id="storeInfo" name="storeInfo" data-parsley-validate="" novalidate="">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Contact name:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" ng-model="storeData.contactName" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Email:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" ng-model="storeData.email" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Phone:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" ng-model="storeData.contactNumber" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Website:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" ng-model="storeData.website" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Twitter:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" ng-model="storeData.twitter_Url" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Default Currency:</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control input-sm" ng-hide="EDIT==false" ng-model="selCurrency" data-ng-options="a.currencyDesc for a in dd_currency" id="currencyDD" ng-change="storeData.currencyDesc=selCurrency.currencyDesc;storeData.currencyId=selCurrency.id;" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Time zone:</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control input-sm" ng-hide="EDIT==false" ng-model="selTimezone" data-ng-options="a.timezoneDesc for a in dd_timezone" id="timezoneDD" ng-change="storeData.timezoneDesc=selTimezone.timezoneDesc;storeData.timezoneId=selTimezone.id;" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm-5 float-right text-right">
+                <div ng-show="EDIT==false">
+                    <h4 class="invoice-title" ng-show="EDIT==false">{{storeData.storeName}}</h4>
+                    <b ng-show="EDIT==false">
+                        {{storeData.storeTypeName}}
+                    </b>
+                    <div ng-show="EDIT==false" class="invoice-date mrg20B">{{storeData.privateUrl}}</div>
+
+                    <div class="divider"></div>
+                </div>
+                <div>
+                    <button ng-click="EDIT=true;" class="btn btn-alt btn-hover btn-info" ng-hide="STORE_ID==0 || EDIT==true">
+                        <span>Edit Store</span>
+                        <i class="glyph-icon icon-edit"></i>
+                    </button>
+                    <button ng-click="saveSotreData();" class="btn btn-alt btn-hover btn-success" ng-hide="EDIT==false">
+                        <span>Save</span>
+                        <i class="glyph-icon icon-save"></i>
+                    </button>
+                    <button ng-click="EDIT=false;" class="btn btn-alt btn-hover btn-warning" ng-hide="STORE_ID==0 || EDIT==false">
+                        <span>Cancel</span>
+                        <i class="glyph-icon icon-remove"></i>
+                    </button>
+                </div>
+                <div ng-hide="EDIT==false">
+                    <div class="divider"></div>
+                    <form class="form-horizontal bordered-row" id="dForm" name="dForm" data-parsley-validate="" novalidate="">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group" ng-hide="EDIT==false">
+                                    <label class="col-sm-12 control-label" style="text-align:left">Store Name:</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" ng-model="storeData.storeName" class="form-control input-sm" />
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-hide="EDIT==false">
+                                    <label class="col-sm-12 control-label" style="text-align:left">Store Type:</label>
+                                    <div class="col-sm-12">
+                                        <select class="form-control input-sm" ng-hide="EDIT==false" ng-model="selStoretype" data-ng-options="a.storeType for a in dd_storetype" id="storeTypeDD" ng-change="storeData.storeTypeName=selStoretype.storeType;storeData.storeTypeId=selStoretype.id;" />
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-hide="EDIT==false">
+                                    <label class="col-sm-12 control-label" style="text-align:left">Store URL:</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" ng-model="storeData.privateUrl" class="form-control input-sm" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        <div class="divider"></div>
+        <div class="row">
+            <div class="col-md-6">
+                <h2 class="invoice-client mrg10T">Physical Address</h2>
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="example-box-wrapper">
+                            <form class="form-horizontal bordered-row" id="addrInfo" name="addrInfo" data-parsley-validate="" novalidate="">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Address Line 1:</label>
+                                            <div class="col-sm-8">
+                                                <label class="control-label" style="font-weight:normal" ng-show="EDIT==false">{{storeData.items[0].addressLine1}}</label>
+                                                <input type="text" ng-model="storeData.items[0].addressLine1" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Address Line 2:</label>
+                                            <div class="col-sm-8">
+                                                <label class="control-label" style="font-weight:normal" ng-show="EDIT==false">{{storeData.items[0].addressLine2}}</label>
+                                                <input type="text" ng-model="storeData.items[0].addressLine2" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Suburb:</label>
+                                            <div class="col-sm-8">
+                                                <label class="control-label" style="font-weight:normal" ng-show="EDIT==false">{{storeData.items[0].suburb}}</label>
+                                                <input type="text" ng-model="storeData.items[0].suburb" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">City:</label>
+                                            <div class="col-sm-8">
+                                                <label class="control-label" style="font-weight:normal" ng-show="EDIT==false">{{storeData.items[0].cityName}}</label>
+                                                <select class="form-control input-sm" ng-hide="EDIT==false" ng-model="selCity0" data-ng-options="a.cityName for a in dd_city" id="cityDD" ng-change="getSC0()" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">State:</label>
+                                            <div class="col-sm-8">
+                                                <label class="control-label" style="font-weight:normal" ng-show="EDIT==false">{{storeData.items[0].stateName}}</label>
+                                                <input type="text" ng-model="storeData.items[0].stateName" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Country:</label>
+                                            <div class="col-sm-8">
+                                                <label class="control-label" style="font-weight:normal" ng-show="EDIT==false">{{storeData.items[0].countryName}}</label>
+                                                <input type="text" ng-model="storeData.items[0].countryName" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Zip Code:</label>
+                                            <div class="col-sm-8">
+                                                <label class="control-label" style="font-weight:normal" ng-show="EDIT==false">{{storeData.items[0].zipCode}}</label>
+                                                <input type="text" ng-model="storeData.items[0].zipCode" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Latitude:</label>
+                                            <div class="col-sm-8">
+                                                <label class="control-label" style="font-weight:normal" ng-show="EDIT==false">{{storeData.items[0].latitude}}</label>
+                                                <input type="text" ng-model="storeData.items[0].latitude" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Longitude:</label>
+                                            <div class="col-sm-8">
+                                                <label class="control-label" style="font-weight:normal" ng-show="EDIT==false">{{storeData.items[0].longitude}}</label>
+                                                <input type="text" ng-model="storeData.items[0].longitude" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2 class="invoice-client mrg10T">Postal Address</h2>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="checkbox checkbox-info" ng-hide="EDIT==false || copyChecked == true;">
+                            <label>
+                                <div class="checker" id="uniform-inlineCheckbox114">
+                                    <span ng-class="{'checked': copyCheck == true}">
+                                        <input type="checkbox" id="inlineCheckbox114" checked="" class="custom-checkbox" ng-model="copyCheck" ng-change="copyPAddress();">
+                                        <i class="glyph-icon icon-check"></i>
+                                    </span>
+                                </div>
+                                <strong>Same as Physical Address</strong>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="example-box-wrapper">
+                            <form class="form-horizontal bordered-row" id="addrInfo" name="addrInfo" data-parsley-validate="" novalidate="">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Address Line 1:</label>
+                                            <div class="col-sm-8">
+                                                <label class="control-label" style="font-weight:normal" ng-show="EDIT==false">{{storeData.items[1].addressLine1}}</label>
+                                                <input type="text" ng-model="storeData.items[1].addressLine1" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Address Line 2:</label>
+                                            <div class="col-sm-8">
+                                                <label class="control-label" style="font-weight:normal" ng-show="EDIT==false">{{storeData.items[1].addressLine2}}</label>
+                                                <input type="text" ng-model="storeData.items[1].addressLine2" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Suburb:</label>
+                                            <div class="col-sm-8">
+                                                <label class="control-label" style="font-weight:normal" ng-show="EDIT==false">{{storeData.items[1].suburb}}</label>
+                                                <input type="text" ng-model="storeData.items[1].suburb" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">City:</label>
+                                            <div class="col-sm-8">
+                                                <label class="control-label" style="font-weight:normal" ng-show="EDIT==false">{{storeData.items[1].cityName}}</label>
+
+                                                <select class="form-control input-sm" ng-hide="EDIT==false" ng-model="selCity1" data-ng-options="a.cityName for a in dd_city" id="cityDD" ng-change="getSC1()" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">State:</label>
+                                            <div class="col-sm-8">
+                                                <label class="control-label" style="font-weight:normal" ng-show="EDIT==false">{{storeData.items[1].stateName}}</label>
+                                                <input type="text" ng-model="storeData.items[1].stateName" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Country:</label>
+                                            <div class="col-sm-8">
+                                                <label class="control-label" style="font-weight:normal" ng-show="EDIT==false">{{storeData.items[1].countryName}}</label>
+                                                <input type="text" ng-model="storeData.items[1].countryName" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Zip Code:</label>
+                                            <div class="col-sm-8">
+                                                <label class="control-label" style="font-weight:normal" ng-show="EDIT==false">{{storeData.items[1].zipCode}}</label>
+                                                <input type="text" ng-model="storeData.items[1].zipCode" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Latitude:</label>
+                                            <div class="col-sm-8">
+                                                <label class="control-label" style="font-weight:normal" ng-show="EDIT==false">{{storeData.items[1].latitude}}</label>
+                                                <input type="text" ng-model="storeData.items[1].latitude" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Longitude:</label>
+                                            <div class="col-sm-8">
+                                                <label class="control-label" style="font-weight:normal" ng-show="EDIT==false">{{storeData.items[1].longitude}}</label>
+                                                <input type="text" ng-model="storeData.items[1].longitude" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="divider"></div>
+        <div class="row" ng-hide="STORE_ID==0">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2 class="invoice-client mrg10T">Devices</h2>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-alt btn-hover btn-info pull-right" ng-click="addNewDevice();">
+                        <span>Add New Device</span>
+                        <i class="glyph-icon icon-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <table id="datatable-tabletools" class="table table-striped table-bordered dataTable" cellspacing="0" width="100%" role="grid" aria-describedby="datatable-tabletools_info" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Device Id</th>
+                        <th class="text-center">Flavour</th>
+                        <th>PIN</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr role="row" ng-repeat="c in deviceData">
+                        <td>{{$index+1}}</td>
+                        <td>{{c.deviceId}}</td>
+                        <td>{{c.flavourName}}</td>
+                        <td>{{c.devicePin}}</td>
+                        <td>
+                            <button class="btn btn-info btn-xs" ng-click="regeneratePin(c.deviceId);" title="Regenerate PIN"><i class="glyph-icon icon-refresh"></i>  Regenerate PIN</button>
+                            <button class="btn btn-warning btn-xs" ng-click="removeDevice(c.id);" title="Delete Device"><i class="glyph-icon icon-remove"></i></button>
+                        </td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

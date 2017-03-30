@@ -1,0 +1,780 @@
+<script type="text/javascript">
+	/* Input switch */
+
+	$(function() {
+		"use strict";
+		debugger;
+		setTimeout(function(){$('.input-switch').bootstrapSwitch();},2000)
+		
+	});
+</script>
+<div cg-busy="{promise:myPromise,message:busymsg,backdrop:true}">
+	<div id="page-title">
+		<h2>Campaign Creation Wizard</h2>
+		<p>Short description</p>
+	</div>
+	<div class="panel">
+		<div class="panel-body">
+			<div class="example-box-wrapper">
+				<div id="form-wizard-2">
+					<ul
+						class="list-group list-group-separator row list-group-icons list-group-centered">
+						<li class="col-md-2 active"><a data-target="#custom-step-1"
+							data-toggle="tab" class="list-group-item"> <i
+								class="glyph-icon font-primary icon-pencil"></i> Details
+						</a></li>
+						<li class="col-md-2"><a data-target="#custom-step-2"
+							data-toggle="tab" class="list-group-item"> <i
+								class="glyph-icon font-primary icon-filter"></i> Select Offer
+						</a></li>
+						<li class="col-md-2"><a data-target="#custom-step-3"
+							data-toggle="tab" class="list-group-item"> <i
+								class="glyph-icon font-primary icon-envelope"></i> Message
+						</a></li>
+						<li class="col-md-2"><a data-target="#custom-step-4"
+							data-toggle="tab" class="list-group-item"> <i
+								class="glyph-icon font-primary icon-calendar"></i> Schedule
+						</a></li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane active" id="custom-step-1">
+							<div class="example-box-wrapper">
+								<form class="form-horizontal bordered-row">
+									<div class="content-box">
+										<h3 class="content-box-header bg-green">
+											<strong>Campaign Details</strong>
+										</h3>
+										<div class="content-box-wrapper">
+											<div class="row">
+												<div class="col-sm-6">
+													<div class="form-group">
+														<label class="col-sm-4 control-label">Campaign
+															Name</label>
+														<div class="col-sm-8">
+															<input type="text" ng-model="sic.campaignName"
+																class="form-control" id="">
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-4 control-label">Description</label>
+														<div class="col-sm-8">
+															<textarea my-maxlength="30" ng-model="sic.campaignDesc"
+																name="" id="" class="form-control"></textarea>
+															<p>{{30 - sic.campaignDesc.length}} chars remaining</p>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-4 control-label">Start Date</label>
+														<div class="col-sm-6">
+															<input type="date" ng-model="campaignStartDate"
+																class="form-control" id="">
+														</div>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label class="col-sm-4 control-label">Campaign
+															Goal</label>
+														<div class="col-sm-8">
+															<select class="form-control"
+																ng-change="selectGoal(campGoal);" ng-model="campGoal"
+																name="campGoal" required>
+																<option ng-repeat="c in dd_campGoals">{{c.goalName}}</option>
+															</select>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-4 control-label">Across</label>
+														<div class="col-sm-8">
+															<div class="radio-info radio-inline">
+																<label>
+																	<div class="radio" id="uniform-inlineRadio114">
+																		<span
+																			ng-class="{'checked': sic.granularity == 'business'}"><input
+																			ng-checked="true" type="radio" id="business"
+																			name="across" ng-model="sic.granularity"
+																			ng-click="stores=0;" value="business"><i
+																			class="glyph-icon icon-circle"></i></span>
+																	</div> All Stores
+																</label>
+															</div>
+															<div class="radio-danger radio-inline">
+																<label>
+																	<div class="radio" id="uniform-inlineRadio114">
+																		<span
+																			ng-class="{'checked': sic.granularity == 'store'}"><input
+																			type="radio" id="store" name="across"
+																			ng-model="sic.granularity" ng-click="stores=1;"
+																			value="store"><i
+																			class="glyph-icon icon-circle"></i></span>
+																	</div> Specific Stores
+																</label>
+															</div>
+														</div>
+													</div>
+													<div ng-show="sic.granularity == 'store'"
+														class="form-group">
+														<label class="col-sm-4 control-label"></label>
+														<div class="col-sm-8">
+															<tags-input ng-model="tags" placeholder="Add a store"
+																display-property="storeName" add-on-paste="true">
+															<auto-complete min-length="1"
+																highlight-matched-text="true" load-on-down-arrow="true"
+																source="loadTags($query)"></auto-complete> </tags-input>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-4 control-label">End Date</label>
+														<div class="col-sm-8">
+															<input type="date" ng-model="campaignEndDate"
+																class="form-control" id="">
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="tab-pane" id="custom-step-2">
+							<div class="example-box-wrapper">
+								<form class="form-horizontal bordered-row">
+									<div class="content-box">
+										<h3 class="content-box-header bg-green">Filter Consumers
+										</h3>
+										<div class="content-box-wrapper">
+											<div class="row">
+												<div class="col-md-12">
+													<div class="form-group">
+														<div class="col-sm-3">
+															<select class="form-control"
+																ng-change="getCriteria(ipbterm,2);" ng-model="ipbterm"
+																name="ipbterm" required>
+																<option ng-show="c.contextId==3" ng-repeat="c in map">{{c.buseinessTerm}}</option>
+															</select>
+														</div>
+														<div class="col-sm-3">
+															<select class="form-control"
+																ng-change="getCriteriaId(ipcriteria);"
+																ng-model="ipcriteria" name="ipcriteria" required>
+																<option ng-repeat="c in crit">{{c.value}}</option>
+															</select>
+														</div>
+														<div class="col-sm-3">
+															<select class="form-control"
+																ng-change="getValueId(ipvalue);" ng-model="ipvalue"
+																name="ipvalue" required>
+																<option ng-repeat="c in valueSet">{{c.value}}</option>
+															</select>
+														</div>
+														<div class="col-sm-2">
+															<button
+																class="btn btn-alt btn-hover btn-danger pull-right">
+																<span ng-click="createTag(ipbterm,ipcriteria,ipvalue)">Apply</span>
+																<i class="glyph-icon icon-arrow-right"></i>
+															</button>
+														</div>
+													</div>
+													<div>
+														<p ng-repeat="c in tagList track by $index">
+															{{c}}<span ng-click="removeTag(c);">&nbsp X</span>
+														</p>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="panel">
+											<div class="panel-body">
+												<div class="example-box-wrapper">
+													<div class="row">
+														<div class="col-sm-6">
+															<canvas id="chart-area-2" class="center-margin"
+																width="272" height="272"
+																style="width: 272px; height: 272px;">
+                										</canvas>
+														</div>
+														<div class="col-sm-6">
+															<div class="col-sm-6">
+																<div class="tile-box bg-primary">
+																	<div class="tile-header">Female</div>
+																	<div class="tile-content-wrapper">
+																		<i class="glyph-icon icon-female"></i>
+																		<div class="tile-content">
+																			{{filterChart.femaleCount}}</div>
+																	</div>
+																</div>
+															</div>
+															<div class="col-sm-6">
+																<div class="tile-box bg-primary">
+																	<div class="tile-header">Male</div>
+																	<div class="tile-content-wrapper">
+																		<i class="glyph-icon icon-male"></i>
+																		<div class="tile-content">
+																			{{filterChart.maleCount}}</div>
+																	</div>
+																</div>
+															</div>
+															<table
+																class="table table-bordered table-striped table-condensed">
+																<thead>
+																	<tr>
+																		<th ng-repeat="t in tableData">{{t.tagName}}</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr>
+																		<td ng-repeat="t in tableData">{{t.tagUserCount}}</td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+							<div class="example-box-wrapper">
+								<form class="form-horizontal bordered-row">
+									<div class="content-box">
+										<h3 class="content-box-header bg-green">
+											<strong>Select Offer</strong>
+										</h3>
+										<div class="content-box-wrapper">
+											<div class="row">
+												<div class="col-sm-6">
+													<div class="form-group">
+														<div class="col-sm-12">
+															<input type="text" name="" ng-model="query"
+																placeholder="Start typing to filter offers..."
+																class="form-control autocomplete-input ui-autocomplete-input"
+																autocomplete="off">
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Offers</label>
+														<div class="col-sm-10">
+															<div class="radio"
+																ng-repeat="c in offerData | limitTo:10 | filter:query">
+																<label> <input ng-model="$parent.offSel"
+																	type="radio" name="example-radio1"
+																	value="{{c.offerId}}">{{c.offerCode}} :
+																	{{c.offerDesc}}
+																</label>
+															</div>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Latest Offer</label>
+														<div class="col-sm-10">
+															<div class="radio">
+																<label><input ng-checked="true"
+																	ng-model="offSel" type="radio" name="example-radio1"
+																	value="{{latestOffer.offerId}}">{{latestOffer.offerCode}}
+																	: {{latestOffer.offerDesc}} </label>
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-sm-6">
+													<label class="col-sm-1 control-label"></label>
+													<div class="col-sm-12">
+														<a href="javascript:void(0);" title="Offer Info"
+															class="tile-box btn btn-default">
+															<div class="tile-header">Offer Details</div>
+															<div class="tile-content-wrapper">
+																<div>
+																	<h5>Offer Code : {{offerDet.offerCode}}</h5>
+																	<br>
+																	<h5>Description : {{offerDet.offerDesc}}</h5>
+																	<br>
+																	<h5>Begin Date : {{beginDate}}</h5>
+																	<br>
+																	<h5>End Date : {{endDate}}</h5>
+																	<br>
+																	<h5>Offer At : {{offerDet.offerAt}}</h5>
+																	<br> <img style="height: 80px; width: 100px;"
+																		ng-src="{{offerDet.imageUrl}}">
+																</div>
+															</div>
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="tab-pane" id="custom-step-3">
+							<div class="content-box">
+								<h3 class="content-box-header bg-green">
+									<strong>Design Message</strong>
+								</h3>
+								<div class="content-box-wrapper">
+									<div class="example-box-wrapper">
+										<form class="form-horizontal bordered-row">
+											<div class=="row">
+												<div class="col-sm-6">
+													<div class="form-group">
+														<label class="col-sm-4 control-label">Enable SMS</label>
+														<div class="col-sm-6">
+															<input type="checkbox" ng-model="flagSms" data-on-color="primary" class="input-switch" data-size="medium" data-on-text="On" data-off-text="Off" ng-change="getFlag();">
+															<input type="checkbox" ng-model="flagSms" ng-change="getSmsFlag();">
+														</div>
+													</div>
+													<div ng-show="flagSms==true">
+													<div class="form-group">
+														<div>
+															<label class="col-sm-4 control-label">Select
+																Template</label>
+															<div class="col-sm-7">
+																<select ng-model="template"
+																	ng-change="setMsg(template);" name="template"
+																	class="form-control" id="template" required>
+																	<option ng-repeat="c in userdataGet.templates">{{c.templateName}}</option>
+																</select>
+															</div>
+														</div>
+													</div>
+													<div class="form-group">
+														<div>
+															<label class="col-sm-4 control-label">Message
+																Body</label>
+															<div class="col-sm-7">
+																<h6>{{bind.prefixText1}}</h6>
+																<textarea my-maxlength="120" ng-model="smsMsgBody"
+																	name="" id="" class="form-control"></textarea>
+																<p>{{120 - smsMsgBody.length}} chars remaining</p>
+																<h6>{{bind.postfixText1}}</h6>
+																<h6>{{bind.postfixText2}}</h6>
+															</div>
+														</div>
+													</div>
+													<div><hr></div>
+													<div class="form-group">
+														<div>
+															<div class="col-sm-4"></div>
+															<div class="col-sm-7">
+																<h4><strong>MESSAGE PREVIEW</strong></h4><br>
+																<h6>{{bind.prefixText1}}</h6><br>
+																<h5>{{smsMsgBody}}</h5><br>
+																<h6>{{bind.postfixText1}}</h6>
+																<h6>{{bind.postfixText2}}</h6>
+															</div>
+														</div>
+													</div>
+													</div>
+												</div>
+												<div class="col-sm-6">
+													<div class="form-group">
+														<label class="col-sm-4 control-label">Enable
+															Notification</label>
+														<div class="col-sm-6">
+															<input type="checkbox" data-on-color="primary" name="checkbox-example-1" class="input-switch" checked data-size="medium" data-on-text="On" data-off-text="Off">
+															<input type="checkbox" ng-model="flagApp" ng-change="getAppFlag();">
+														</div>
+
+													</div>
+													<div ng-show="flagApp==true">
+													<div class="form-group">
+														<div>
+															<label class="col-sm-4 control-label">Select
+																Template</label>
+															<div class="col-sm-7">
+																<select ng-model="apptemplate"
+																	ng-change="setApp(apptemplate);" name="apptemplate"
+																	class="form-control" id="template" required>
+																	<option ng-repeat="c in appTemp">{{c.templateName}}</option>
+																</select>
+															</div>
+														</div>
+													</div>
+													<div class="form-group">
+														<div>
+															<label class="col-sm-4 control-label">Notification
+																Body</label>
+															<div class="col-sm-7">
+																<h6>{{appBind.prefixText1}}</h6>
+																<textarea my-maxlength="120" ng-model="appMsgBody"
+																	name="" id="" class="form-control"></textarea>
+																<p>{{120 - appMsgBody.length}} chars remaining</p>
+																<h6>{{appBind.postfixText1}}</h6>
+																<h6>{{appBind.postfixText2}}</h6>
+															</div>
+														</div>
+													</div>
+													<div><hr></div>
+													<div class="form-group">
+														<div>
+															<div class="col-sm-4"><img style="height:130px;width:130px;margin-top:20px;" src="assets/image-resources/poly-bg/poly-bg-3.jpg"></div>
+															<div class="col-sm-7">
+																<h4><strong>NOTIFICATION PREVIEW</strong></h4><br>
+																<h6>{{appBind.prefixText1}}</h6><br>
+																<h5>{{appMsgBody}}</h5><br>
+																<h6>{{appBind.postfixText1}}</h6>
+																<h6>{{appBind.postfixText2}}</h6>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>	
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane" id="custom-step-4">
+							<div class="content-box">
+								<h3 class="content-box-header bg-green">
+									<strong>Schedule Campaign</strong>
+								</h3>
+								<div class="content-box-wrapper">
+									<div class="example-box-wrapper">
+										<form class="form-horizontal bordered-row">
+											<div class="form-group">
+												<label class="col-sm-4 control-label">Burst Mode</label>
+												<div class="col-sm-6">
+													<div class="radio-info radio-inline">
+														<label>
+															<div class="radio" id="uniform-inlineRadio114">
+																<span
+																	ng-class="{'checked': sic.campaignSchedule.isSingleBurst == 'Y'}"><input
+																	type="radio" id="inlineRadio114" name="burst"
+																	ng-model="sic.campaignSchedule.isSingleBurst"
+																	ng-click="burst=0;" value="Y" class="custom-radio"><i
+																	class="glyph-icon icon-circle"></i></span>
+															</div> Single Burst
+														</label>
+													</div>
+													<div class="radio-danger radio-inline">
+														<label>
+															<div class="radio" id="uniform-inlineRadio115">
+																<span
+																	ng-class="{'checked': sic.campaignSchedule.isSingleBurst == 'N'}"><input
+																	type="radio" id="inlineRadio115"
+																	ng-model="sic.campaignSchedule.isSingleBurst"
+																	name="burst" ng-click="burst=1;" class="custom-radio"
+																	value="N"><i class="glyph-icon icon-circle"></i></span>
+															</div> Multi Burst
+														</label>
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="row">
+													<div ng-show="burst==0 || burst==1" class="col-sm-6">
+														<div class="form-group">
+															<label class="col-sm-4 control-label">Burst On</label>
+															<div class="col-sm-6">
+																<input type="date"
+																	ng-model="notificationStartDate"
+																	class="form-control" id="">
+															</div>
+														</div>
+														<div class="form-group">
+															<label for="" class="col-sm-4 control-label">Specific
+																Time</label>
+															<div class="col-sm-3">
+																<select
+																	ng-model="sic.campaignSchedule.notificationStartHour"
+																	class="form-control" required>
+																	<option value="00">00</option>
+																	<option value="01">01</option>
+																	<option value="02">02</option>
+																	<option value="03">03</option>
+																	<option value="04">04</option>
+																	<option value="05">05</option>
+																	<option value="06">06</option>
+																	<option value="07">07</option>
+																	<option value="08">08</option>
+																	<option value="09">09</option>
+																	<option value="10">10</option>
+																	<option value="11">11</option>
+																	<option value="12">12</option>
+																	<option value="13">13</option>
+																	<option value="14">14</option>
+																	<option value="15">15</option>
+																	<option value="16">16</option>
+																	<option value="17">17</option>
+																	<option value="18">18</option>
+																	<option value="19">19</option>
+																	<option value="20">20</option>
+																	<option value="21">21</option>
+																	<option value="22">22</option>
+																	<option value="23">23</option>
+																</select>
+															</div>
+															<div class="col-sm-3">
+																<select
+																	ng-model="sic.campaignSchedule.notificationStartMinute"
+																	class="form-control" required>
+																	<option value="00">00</option>
+																	<option value="10">10</option>
+																	<option value="20">20</option>
+																	<option value="30">30</option>
+																	<option value="40">40</option>
+																	<option value="50">50</option>
+																</select>
+															</div>
+														</div>
+													</div>
+													<div ng-show="burst==1" class="col-sm-6">
+														<div class="form-group">
+															<label class="col-sm-4 control-label">Repeats</label>
+															<div class="col-sm-6">
+																<input type="text"
+																	ng-model="sic.campaignSchedule.repeatCount"
+																	class="form-control" id="">
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-4 control-label">Repeat In</label>
+															<div class="col-sm-6">
+																<input type="text"
+																	ng-model="sic.campaignSchedule.repeatIntervalInDays"
+																	class="form-control" id="">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="pull-right">
+						<a data-target="#wizardPreview" data-toggle="modal" class="btn btn-alt btn-hover btn-yellow">
+							<span>Preview</span> <i class="glyph-icon icon-arrow-right"></i>
+						</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade" id="wizardPreview" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">×</button>
+				<h3 class="modal-title">WIZARD PREVIEW</h3>
+			</div>
+			<div class="modal-body">
+				<div cg-busy="{promise:myPromise,message:busymsg,backdrop:true}">
+					<div class="panel">
+						<div class="panel-body">
+							<div class="example-box-wrapper">
+								<form class="form-horizontal bordered-row" id="offerform"
+									name="offerform" data-parsley-validate="" novalidate="">
+									<div class="row">
+										<div class="col-md-6">
+											<div class="panel">
+											<div class="panel-body">
+												<div class="example-box-wrapper">
+													<div class="row">
+														<div class="col-sm-6">
+															<canvas id="chart-area-2" class="center-margin"
+																width="150" height="150"
+																style="width: 150px; height: 150px;">
+                										</canvas>
+														</div>
+														<div class="col-sm-6">
+															<div class="col-sm-12">
+																<div class="tile-box bg-primary">
+																	<div class="tile-header">Female</div>
+																	<div class="tile-content-wrapper">
+																		<i class="glyph-icon icon-female"></i>
+																		<div class="tile-content">
+																			{{filterChart.femaleCount}}</div>
+																	</div>
+																</div>
+															</div>
+															<div class="col-sm-12">
+																<div class="tile-box bg-primary">
+																	<div class="tile-header">Male</div>
+																	<div class="tile-content-wrapper">
+																		<i class="glyph-icon icon-male"></i>
+																		<div class="tile-content">
+																			{{filterChart.maleCount}}</div>
+																	</div>
+																</div>
+															</div>
+															<table
+																class="table table-bordered table-striped table-condensed">
+																<thead>
+																	<tr>
+																		<th ng-repeat="t in tableData">{{t.tagName}}</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr>
+																		<td ng-repeat="t in tableData">{{t.tagUserCount}}</td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+											<div class="panel">
+												<div class="panel-body">
+													<div class="col-sm-12">
+														<div class="tile-header">Offer Details</div>
+														<div class="tile-content-wrapper">
+															<div>
+																<h5>Offer Code : {{offerDet.offerCode}}</h5>
+																<br>
+																<h5>Description : {{offerDet.offerDesc}}</h5>
+																<br>
+																<h5>Begin Date : {{beginDate}}</h5>
+																<br>
+																<h5>End Date : {{endDate}}</h5>
+																<br>
+																<h5>Offer At : {{offerDet.offerAt}}</h5>
+																<br> <img style="height: 80px; width: 100px;"
+																	ng-src="{{offerDet.imageUrl}}">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="panel">
+												<div class="panel-body">
+													<div class="col-sm-8">
+														<h4>
+															<strong>MESSAGE PREVIEW</strong>
+														</h4>
+														<br>
+														<h6>{{bind.prefixText1}}</h6>
+														<br>
+														<h5>{{smsMsgBody}}</h5>
+														<br>
+														<h6>{{bind.postfixText1}}</h6>
+														<h6>{{bind.postfixText2}}</h6>
+													</div>
+													<br>
+													<div class="col-sm-8">
+														<h4>
+															<strong>NOTIFICATION PREVIEW</strong>
+														</h4>
+														<br>
+														<h6>{{appBind.prefixText1}}</h6>
+														<br>
+														<h5>{{appMsgBody}}</h5>
+														<br>
+														<h6>{{appBind.postfixText1}}</h6>
+														<h6>{{appBind.postfixText2}}</h6>
+													</div>
+												</div>
+											</div>
+											<div class="panel">
+												<div class="panel-body">
+													<div class="form-group">
+														<label class="col-sm-4 control-label">Campaign
+															Name</label>
+														<div class="col-sm-8 control-label">
+															<h5>{{sic.campaignName}}</h5>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-4 control-label">Campaign
+															Goal</label>
+														<div class="col-sm-8 control-label">
+															<h5>{{campGoal}}</h5>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-4 control-label">Across
+															</label>
+														<div class="col-sm-8 control-label">
+															<h5>{{sic.granularity}}</h5>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-4 control-label">Start Date</label>
+														<div class="col-sm-8 control-label">
+															<h5>{{campaignStartDate}}</h5>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-4 control-label">End Date</label>
+														<div class="col-sm-8 control-label">
+															<h5>{{campaignEndDate}}</h5>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-4 control-label">Burst On</label>
+														<div class="col-sm-8 control-label">
+															<h5>{{notificationStartDate}}</h5>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-4 control-label">Repeat Count</label>
+														<div class="col-sm-8 control-label">
+															<h5>{{sic.campaignSchedule.repeatCount}}</h5>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-4 control-label">Repeat In</label>
+														<div class="col-sm-8 control-label">
+															<h5>{{sic.campaignSchedule.repeatIntervalInDays}}</h5>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+				<a type="button" class="btn btn-success"
+					ng-click="publishCampaign(sic);" data-toggle="modal" data-target="#stopModal">Finalise</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+<div class="modal fade" id="stopModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <div class="modal-content">
+       <div class="alert-modal-spacing">
+        <div class="modal-body" ng-if="voila">
+          <p> Voila !!! Your Campaign is published </p>
+        </div>
+        <div class="modal-body" ng-if="oops">
+          <p> Oops !!! Some technical error occurred... Try again later </p>
+        </div>
+       </div> 
+        <div class="modal-footer">
+          <button type="button"  ng-click="alertPop()" class="btn btn-default" data-dismiss="modal" style="margin-left:10px">OK</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+      
+    </div>
+ </div>

@@ -1,0 +1,222 @@
+﻿<div cg-busy="{promise:myPromise,message:busymsg,backdrop:true}">
+    <div id="page-title">
+        <h2>Offers</h2>
+        <p>Sort description.</p>
+    </div>
+    <div class="panel">
+        <div class="panel-body">
+            <div class="example-box-wrapper">
+                <div id="datatable-tabletools_wrapper" class="dataTables_wrapper form-inline">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyph-icon icon-search"></i></span>
+                                <input type="text" class="form-control" placeholder="Search..." ng-model="filterData">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <button class="btn btn-alt btn-hover btn-danger pull-right" ng-click="adEditOffer({},false);">
+                                <span>Create Offer</span>
+                                <i class="glyph-icon icon-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <table id="datatable-tabletools" class="table table-striped table-bordered dataTable" cellspacing="0" width="100%" role="grid" aria-describedby="datatable-tabletools_info" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>
+                                    <a ng-click="orderByField='offerCode'; reverseSort = !reverseSort" style="font-weight: bolder; cursor: pointer">
+                                        Offer Code<span ng-show="orderByField == 'offerCode'"><span ng-show="!reverseSort"><i class="icon-chevron-up"></i></span><span ng-show="reverseSort"><i class="icon-chevron-down"></i></span></span>
+                                    </a>
+                                </th>
+                                <th>
+                                    <a ng-click="orderByField='offerDesc'; reverseSort = !reverseSort" style="font-weight: bolder; cursor: pointer">
+                                        Description<span ng-show="orderByField == 'offerDesc'"><span ng-show="!reverseSort"><i class="icon-chevron-up"></i></span><span ng-show="reverseSort"><i class="icon-chevron-down"></i></span></span>
+                                    </a>
+                                </th>
+                                <th>
+                                    <a ng-click="orderByField='productName'; reverseSort = !reverseSort" style="font-weight: bolder; cursor: pointer">
+                                        Product Name<span ng-show="orderByField == 'productName'"><span ng-show="!reverseSort"><i class="icon-chevron-up"></i></span><span ng-show="reverseSort"><i class="icon-chevron-down"></i></span></span>
+                                    </a>
+                                </th>
+                                <th>
+                                    <a ng-click="orderByField='offerType'; reverseSort = !reverseSort" style="font-weight: bolder; cursor: pointer">
+                                        Type<span ng-show="orderByField == 'offerType'"><span ng-show="!reverseSort"><i class="icon-chevron-up"></i></span><span ng-show="reverseSort"><i class="icon-chevron-down"></i></span></span>
+                                    </a>
+                                </th>
+                                <th>
+                                    <a ng-click="orderByField='amount'; reverseSort = !reverseSort" style="font-weight: bolder; cursor: pointer">
+                                        Amount<span ng-show="orderByField == 'amount'"><span ng-show="!reverseSort"><i class="icon-chevron-up"></i></span><span ng-show="reverseSort"><i class="icon-chevron-down"></i></span></span>
+                                    </a>
+                                </th>
+                                <th>
+                                    <a ng-click="orderByField='linkedCampaigns'; reverseSort = !reverseSort" style="font-weight: bolder; cursor: pointer">
+                                        Linked Campaigns<span ng-show="orderByField == 'linkedCampaigns'"><span ng-show="!reverseSort"><i class="icon-chevron-up"></i></span><span ng-show="reverseSort"><i class="icon-chevron-down"></i></span></span>
+                                    </a>
+                                </th>
+                                <th>.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr role="row" ng-repeat="c in tableData =(offerData | orderBy:orderByField:reverseSort | filter: filterData)">
+                                <td>{{$index+1}}</td>
+                                <td>{{ c.offerCode }}</td>
+                                <td>{{ c.offerDesc }}</td>
+                                <td>{{ c.productName }}</td>
+                                <td>{{ c.offerType }}</td>
+                                <td>{{ c.amount }}</td>
+                                <td>{{ c.linkedCampaigns }}</td>
+                                <td>
+                                    <button class="btn btn-round btn-info" ng-click="adEditOffer(c,true);"><i class="glyph-icon icon-edit"></i></button>
+                                    <button class="btn btn-round btn-warning" ng-click="removeOffer(c.offerId);"><i class="glyph-icon icon-remove"></i></button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table><div class="row"><div class="col-sm-6"><div class="dataTables_info" id="datatable-tabletools_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div></div><div class="col-sm-6"><div class="dataTables_paginate paging_bootstrap" id="datatable-tabletools_paginate"><ul class="pagination"><li class="previous disabled"><a href="#">Previous</a></li><li class="active"><a href="#">1</a></li><li><a href="#">2</a></li><li><a href="#">3</a></li><li><a href="#">4</a></li><li><a href="#">5</a></li><li class="next"><a href="#">Next</a></li></ul></div></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="offerAddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 class="modal-title">{{EDIT==true?'Update Offer - '+NewOfferData.offerCode:'Create New Offer'}}</h3>
+            </div>
+            <div class="modal-body">
+                <div cg-busy="{promise:myPromise,message:busymsg,backdrop:true}">
+                    <div class="panel">
+                        <div class="panel-body">
+                            <div class="example-box-wrapper">
+                                <form class="form-horizontal bordered-row" id="offerform" name="offerform" data-parsley-validate="" novalidate="">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group" ng-show="EDIT==true">
+                                                <label class="col-sm-4 control-label">Offer Id</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" placeholder="Offer ID" class="form-control" name="offerId" ng-model="NewOfferData.offerId" ng-disabled="true">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Offer At</label>
+                                                <div class="col-sm-6">
+                                                    <select ng-model="NewOfferData.offerAt" class="form-control" id="offerAt">
+                                                        <option value="0">Please Select</option>
+                                                        <option value="Product">Product</option>
+                                                        <option value="Category">Category</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" ng-show="NewOfferData.offerAt=='Product'">
+                                                <label class="col-sm-4 control-label">Search Product</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" ng-disabled="EDIT==true" focus-me="opened" ng-model="offPro" ng-focus="onFocus($event)" ng-trim="false" empty-typeahead typeahead="product.productDesc for product in productSearch | filter:$viewValue:stateComparator" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group" ng-show="NewOfferData.offerAt=='Category'">
+                                                <label class="col-sm-4 control-label">Category</label>
+                                                <div class="col-sm-6">
+                                                    <select class="form-control" ng-model="offerCategory" data-ng-options="a.categoryName for a in dd_Categories" id="catDD" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Offer Code</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" placeholder="Offer Code" class="form-control" name="offerCode" ng-model="NewOfferData.offerCode">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Offer Description</label>
+                                                <div class="col-sm-6">
+                                                    <textarea class="form-control" ng-model="NewOfferData.offerDesc" placeholder="Offer Description...."></textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">Offer Type</label>
+                                                <div class="col-sm-6">
+                                                    <select class="form-control" ng-model="offerTypeDesc" data-ng-options="a.description for a in dd_offertype" id="otDD" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Across</label>
+                                                <div class="col-sm-9">
+                                                    <div class="radio-info radio-inline">
+                                                        <label>
+                                                            <div class="radio" id="uniform-inlineRadio114"><span ng-class="{'checked': NewOfferData.offerLevel == 'business'}"><input type="radio" id="inlineRadio114" ng-model="NewOfferData.offerLevel" name="across" class="custom-radio" value="business"><i class="glyph-icon icon-circle"></i></span></div>
+                                                            All Stores
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-danger radio-inline">
+                                                        <label>
+                                                            <div class="radio" id="uniform-inlineRadio115">
+                                                                <span ng-class="{'checked': NewOfferData.offerLevel == 'store'}">
+                                                                    <input type="radio" id="inlineRadio115" ng-model="NewOfferData.offerLevel" name="across" class="custom-radio" value="store"><i class="glyph-icon icon-circle"></i>
+                                                                </span>
+                                                            </div>
+                                                            Select Stores
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" ng-show="NewOfferData.offerLevel=='store'">
+                                                <label class="col-sm-3 control-label">Select Store</label>
+                                                <div class="col-sm-6">
+                                                    <tags-input ng-model="tags" display-property="storeName" add-on-paste="true">
+                                                        <auto-complete min-length="1" highlight-matched-text="true" load-on-down-arrow="true" source="loadTags($query)"></auto-complete>
+                                                    </tags-input>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Begin Date</label>
+                                                <div class="col-sm-6">
+                                                    <input type="date" class="form-control" ng-model="NewOfferData.beginDate" value="" id="dpd1" placeholder="Choose the Start date">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">End Date</label>
+                                                <div class="col-sm-6">
+                                                    <input type="date" class="form-control" ng-model="NewOfferData.endDate" value="" id="dpd2" placeholder="Choose the End date">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Offer Images</label>
+                                                <div class="col-sm-6">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                        <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;">
+                                                            <img alt="" data-ng-src="{{imgData}}" class="photo" ng-show="imgData.length>0" />
+                                                            <img alt="" src="img/noimage.jpg" class="photo" ng-show="imgData.length<=0 && NewOfferData.imageUrl.length<=0" />
+                                                            <img alt="" data-ng-src="{{NewOfferData.imageUrl}}}" class="photo" ng-show="EDIT==true && NewOfferData.imageUrl.length>0" />
+                                                        </div>
+                                                        <div>
+                                                            <input type="file" style="display: none;" id="imgupload" name="file" accept="image/*" onchange="angular.element(this).scope().convertImg(this)">
+                                                            <button class="btn btn-info btn-sm" onclick="document.getElementById('imgupload').click();"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;{{imgData.length>0 || NewOfferData.imageUrl.length>0?'Change':'Select Image'}}</button>
+                                                            <button class="btn btn-warning btn-sm" ng-click="imgData='';storeData.imageUrl='';" ng-show="imgData.length>0 || NewOfferData.imageUrl.length>0">Remove</button>
+                                                           
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" ng-click="saveOffer();">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

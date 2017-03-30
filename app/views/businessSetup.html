@@ -1,0 +1,184 @@
+<div cg-busy="{promise:myPromise,message:busymsg,backdrop:true}">
+    <div id="page-title">
+        <h2>Business Setup</h2>
+        <p>Short description.</p>
+    </div>
+    <div class="content-box pad25A">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="dummy-logo">
+                    <span ng-show="imgData.length<=0 && businessData.imageUrl.length<=0">Your Company Logo</span>
+                    <img alt="" data-ng-src="{{imgData}}" class="photo" ng-show="imgData.length>0" style="width: 200px; height: 150px;" />
+                    <img alt="" data-ng-src="{{businessData.imageUrl}}}" class="photo" ng-show="storeData.imageUrl.length>0" style="width: 200px; height: 150px;" />
+                </div>
+                <div ng-hide="EDIT==false">
+                    <span class="btn btn-info btn-file" style="cursor:pointer">
+                        <span class="fileinput-new">{{imgData.length>0 || businessData.imageUrl.length>0?'Change':'Select Image'}}</span>
+                        <input type="file" id="imgupload" name="file" accept="image/*" onchange="angular.element(this).scope().convertImg(this)">
+                    </span>
+                    <button class="btn btn-default" ng-click="imgData='';businessData.imageUrl='';" ng-show="imgData.length>0 || businessData.imageUrl.length>0">Remove</button>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div ng-show="EDIT==false">
+                    <h2 class="invoice-client mrg10T">Business Info:</h2>
+                    <h5>{{businessData.contactFirstName}} {{businessData.contactLastName}}</h5>
+                    <address class="invoice-address">
+                        <i class="glyph-icon icon-envelope-o"></i> {{businessData.email}}
+                        <br>
+                        <i class="glyph-icon icon-phone"></i> {{businessData.contactNumber}}
+                        <br>
+                        <i class="glyph-icon icon-globe"></i> {{businessData.website}}
+                        <br>
+                        <i class="glyph-icon icon-facebook"></i> {{businessData.facebookUrl}}
+                        <br>
+                        <i class="glyph-icon icon-twitter"></i> {{businessData.twitterUrl}}
+                        <br>
+                        <i class="glyph-icon icon-link"></i> {{businessData.privateUrl}}
+                        <br>
+                        <i class="glyph-icon icon-money"></i> {{businessData.currencyDesc}}
+                        <br>
+                        <i class="glyph-icon icon-calendar"></i> {{businessData.timezoneDesc}}
+                        <br>
+                        <i class="glyph-icon icon-certificate"></i> {{businessData.subscriptionModelName}}
+                    </address>
+                </div>
+                <div class="panel" ng-hide="EDIT==false">
+                    <div class="panel-body">
+                        <div class="example-box-wrapper">
+                            <form class="form-horizontal bordered-row" id="storeInfo" name="storeInfo" data-parsley-validate="" novalidate="">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">First Name:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" ng-model="businessData.contactFirstName" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Last Name:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" ng-model="businessData.contactLastName" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Email:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" ng-model="businessData.email" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Phone:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" ng-model="businessData.contactNumber" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Website:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" ng-model="businessData.website" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Facebook:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" ng-model="businessData.facebookUrl" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Twitter:</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" ng-model="businessData.twitterUrl" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Private URL</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" ng-model="businessData.privateUrl" ng-hide="EDIT==false" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Default Currency:</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control input-sm" ng-hide="EDIT==false" ng-model="selCurrency" data-ng-options="a.currencyDesc for a in dd_currency" id="currencyDD" ng-change="storeData.currencyDesc=selCurrency.currencyDesc;storeData.currencyId=selCurrency.id;" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Time zone:</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control input-sm" ng-hide="EDIT==false" ng-model="selTimezone" data-ng-options="a.timezoneDesc for a in dd_timezone" id="timezoneDD" ng-change="storeData.timezoneDesc=selTimezone.timezoneDesc;storeData.timezoneId=selTimezone.id;" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Subscription Model:</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control input-sm" ng-hide="EDIT==false" ng-model="selSubscriptionModel" data-ng-options="a.subscriptionModelName for a in dd_subscribe" id="subscribeDD" ng-change="storeData.subscriptionModelName=selSubscriptionModel.subscriptionModelName;storeData.subscriptionModelId=selSubscriptionModel.subscriptionModelId;" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm-5 float-right text-right">
+                <div ng-show="EDIT==false">
+                    <h4 class="invoice-title" ng-show="EDIT==false">{{businessData.accountName}}</h4>
+                    <b ng-show="EDIT==false">
+                        {{businessData.businessAccountTypeName}}
+                    </b>
+                    <div ng-show="EDIT==false" class="invoice-date mrg20B">{{businessData.productDomainName}}</div>
+
+                    <div class="divider"></div>
+                </div>
+                <div>
+                    <button ng-click="EDIT=true;" class="btn btn-alt btn-hover btn-info" ng-hide="EDIT==true">
+                        <span>Edit Business</span>
+                        <i class="glyph-icon icon-edit"></i>
+                    </button>
+                    <button ng-click="saveBiz();EDIT=false;" class="btn btn-alt btn-hover btn-success" ng-hide="EDIT==false">
+                        <span>Save</span>
+                        <i class="glyph-icon icon-save"></i>
+                    </button>
+                    <button ng-click="EDIT=false;" class="btn btn-alt btn-hover btn-warning" ng-hide="STORE_ID==0 || EDIT==false">
+                        <span>Cancel</span>
+                        <i class="glyph-icon icon-remove"></i>
+                    </button>
+                </div>
+                <div ng-hide="EDIT==false">
+                    <div class="divider"></div>
+                    <form class="form-horizontal bordered-row" id="dForm" name="dForm" data-parsley-validate="" novalidate="">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group" ng-hide="EDIT==false">
+                                    <label class="col-sm-12 control-label" style="text-align:left">Business Name:</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" ng-model="businessData.accountName" class="form-control input-sm" />
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-hide="EDIT==false">
+                                    <label class="col-sm-12 control-label" style="text-align:left">Product Domain</label>
+                                    <div class="col-sm-12">
+                                        <select class="form-control input-sm" ng-hide="EDIT==false" ng-model="selProductDomainName" data-ng-options="a.productDomainName for a in dd_prodomain" id="productDomainDD" ng-change="businessData.productDomainName=selProductDomainName.productDomainName;businessData.productDomainId=selProductDomainName.productDomainId;"/>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-hide="EDIT==false">
+                                    <label class="col-sm-12 control-label" style="text-align:left">Business Account Type</label>
+                                    <div class="col-sm-12">
+                                        <select class="form-control input-sm" ng-hide="EDIT==false" ng-model="selBusinessAccountType" data-ng-options="a.businessAccountTypeName for a in dd_biztype" id="businessAccountTypeDD" ng-change="businessData.businessAccountTypeName=selBusinessAccountType.businessAccountTypeName;businessData.businessAccountTypeId=selBusinessAccountType.businessAccountTypeId;"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+       
+    </div>
+</div>

@@ -1,0 +1,146 @@
+﻿<style>
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        background-color: #F5F5F5;
+    }
+
+    ::-webkit-scrollbar {
+        width: 10px;
+        background-color: #F5F5F5;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+        background-color: #555;
+    }
+</style>
+<div cg-busy="{promise:myPromise,message:busymsg,backdrop:true}">
+    <div id="page-title">
+        <h2>
+            Message Center
+            <select class="pull-right" ng-change="getUsers();" ng-model="selStore" data-ng-options="a.storeName for a in dd_storeNames" id="storeDD" />
+        </h2>
+        <p>Sort description.</p>
+    </div>
+    <div class="panel">
+        <div class="panel-body" ng-show="selStore.storeId==0">
+            <div class="content-box">
+                <h3 class="content-box-header bg-orange">
+                    <i class="glyph-icon icon-building"></i>
+                    Store Not Selected
+                </h3>
+                <div class="content-box-wrapper" style="text-align:center">
+                    <h2>Store not selected.</h2>
+                    <p>Kindly select a store from dropdown above.</p>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body" ng-show="selStore.storeId!=0">
+            <!--<div class="col-md-3">
+                <div class="content-box">
+                    <h3 class="content-box-header bg-orange">
+                        <i class="glyph-icon icon-building"></i>
+                        Store
+                    </h3>
+                    <div class="content-box-wrapper">
+                        <div class="scrollable-content scrollable-slim scrollable-medium">
+                            <div class="profile-box content-box" ng-repeat="s in dd_storeNames">
+                                <div class="content-box-header clearfix bg-default" style="cursor:pointer;" ng-click="getUsers1(s);">
+                                    <img src="assets/image-resources/gravatar.jpg" alt="" width="40" class="img-bordered border-green img-circle">
+                                    <div class="user-details">
+                                        {{s.storeName}}
+                                        <div>
+                                            <small>{{s.storeId}}</small>
+                                        </div>
+                                        <span class="bs-badge badge-info btn-abs">43</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+            <div class="col-md-5">
+                <div class="content-box">
+                    <h3 class="content-box-header bg-orange">
+                        <i class="glyph-icon icon-user"></i>
+                        Consumers
+                    </h3>
+                    <div class="content-box-wrapper" style="padding:2px">
+                        <div class="scrollable-content scrollable-slim scrollable-medium" style="height:357px">
+                            <div class="profile-box" ng-repeat="u in users">
+                                <div class="content-box-header clearfix" ng-class="(selUid==u.$id) ? 'bg-gray-alt' : 'bg-default'" style="cursor:pointer;padding:3px;text-transform:none;font-weight:bold" ng-click="getMsgs(u)">
+                                    <img src="assets/image-resources/gravatar.jpg" alt="" width="40" class="img-bordered border-green img-circle">
+                                    <div class="user-details">
+                                        {{consumerName(u.$id,u);}}
+                                        <div ng-repeat="l in lastMsgs track by $index">
+                                            <small ng-show="$last" style="font-style:italic;font-weight:normal">{{l.text}}</small>
+                                        </div>
+                                        <span class="bs-badge badge-info btn-abs">43</span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="content-box">
+                    <h3 class="content-box-header bg-blue text-left">
+                        <i class="glyph-icon icon-comments"></i>
+                        <span ng-show="selUid!=-1">{{consumerChatName}}</span>
+                        <span ng-show="selUid==-1">Consumer Not Selected</span>
+                    </h3>
+                    <div class="content-box-wrapper" style="padding:2px">
+                       
+                        <div class="scrollable-content scrollable-slim scrollable-medium" id="scrollBox">
+                            <h2 ng-show="selUid==-1" style="text-align:center;padding:10px">Kindly select a consumer from the left pane.</h2>
+                            <ul class="chat-box" ng-repeat="message in messages" ng-show="selUid!=-1">
+                                <li ng-if="message.toStore==false">
+                                    <div class="chat-author">
+                                        <img width="36" src="assets/image-resources/gravatar.jpg" alt="">
+                                    </div>
+                                    <div class="popover left no-shadow pull-right">
+                                        <div class="arrow"></div>
+                                        <div class="popover-content">
+                                            {{message.text}}
+                                            <div class="chat-time">
+                                                <i class="glyph-icon icon-clock-o"></i>
+                                                {{message.time | date:'yy-MM-dd HH:mm'}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="float-left" ng-if="message.toStore==true">
+                                    <div class="chat-author">
+                                        <img width="36" src="assets/image-resources/gravatar.jpg" alt="">
+                                    </div>
+                                    <div class="popover right no-shadow">
+                                        <div class="arrow"></div>
+                                        <div class="popover-content">
+                                            {{message.text}}
+                                            <div class="chat-time">
+                                                <i class="glyph-icon icon-clock-o"></i>
+                                                {{message.time | date:'yy-MM-dd HH:mm'}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="button-pane pad10A input-group" style="text-align:left;margin-right:30px" >
+                        <div class="input-group">
+                            <input type="text" id="chatMsgTb" placeholder="Say something here..." class="form-control" ng-model="chatMsg" ng-disabled="selUid==-1" data-emojiable="true">
+                        </div>
+                        <div class="input-group-btn">
+                            <button type="button" ng-click="sendMessage();" ng-disabled="chatMsg.length<=0 || selUid==-1" class="btn btn-default" tabindex="-1"><i class="glyph-icon icon-mail-reply"></i></button>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
