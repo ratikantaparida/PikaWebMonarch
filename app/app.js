@@ -3,13 +3,9 @@ app.config(function ($httpProvider) {
     $httpProvider.interceptors.push('authInterceptorService');
 });
 app.config(function ($routeProvider) {
-    $routeProvider.when("/login", {
-        controller: "loginController",
-        templateUrl: "/PikaWeb/app/views/login.html"
-    });
     $routeProvider.when("/overview", {
-        controller: "homeController",
-        templateUrl: "/PikaWeb/app/views/home.html"
+        controller: "overviewController",
+        templateUrl: "/PikaWeb/app/views/overview.html"
     });
     $routeProvider.when("/campaign", {
         controller: "campaignController",
@@ -23,9 +19,13 @@ app.config(function ($routeProvider) {
         controller: "storeController",
         templateUrl: "/PikaWeb/app/views/store.html"
     });
+    $routeProvider.when("/consumer", {
+        controller: "consumerController",
+        templateUrl: "/PikaWeb/app/views/consumer.html"
+    });
     $routeProvider.when("/storewizard/storeId/:store_ID", {
-        controller: "storewizardController",
-        templateUrl: "/PikaWeb/app/views/storewizard.html"
+        controller: "storeWizardController",
+        templateUrl: "/PikaWeb/app/views/storeWizard.html"
     });
     $routeProvider.when("/offers", {
         controller: "offerController",
@@ -43,14 +43,30 @@ app.config(function ($routeProvider) {
         controller: "businessSetupController",
         templateUrl: "/PikaWeb/app/views/businessSetup.html"
     });
-    $routeProvider.otherwise({ redirectTo: "/overview" });
+    $routeProvider.when("/giftsetting", {
+        controller: "giftSettingController",
+        templateUrl: "/PikaWeb/app/views/giftSetting.html"
+    });
+    $routeProvider.when("/pointsetting", {
+        controller: "pointSettingController",
+        templateUrl: "/PikaWeb/app/views/pointSetting.html"
+    });
+    $routeProvider.when("/badgesetting", {
+        controller: "badgeSettingController",
+        templateUrl: "/PikaWeb/app/views/badgeSetting.html"
+    });
+    $routeProvider.when("/careport", {
+        controller: "reportConsumerController",
+        templateUrl: "/PikaWeb/app/views/reportConsumer.html"
+    });
+    $routeProvider.otherwise({ redirectTo: "/careport" });
 });
-app.run(['authService', '$rootScope', '$location', 'localStorageService', function (authService, $rootScope, $location, localStorageService) {
+app.run(['authService', '$rootScope', '$location', 'localStorageService', '$window', function (authService, $rootScope, $location, localStorageService, $window) {
     authService.fillAuthData();
     $rootScope.$on('$routeChangeStart', function (event) {
         if (!authService.authentication.isAuth) {
             //event.preventDefault();
-            $location.path('/login');
+            $window.location.href = 'login.html';
         }
         else {
             var authData = localStorageService.get('authorizationData');
@@ -59,12 +75,20 @@ app.run(['authService', '$rootScope', '$location', 'localStorageService', functi
             if (ndate > exp) {
                 authService.logOut();
                 // event.preventDefault();
-                $location.path('/login');
+                $window.location.href = 'login.html';
             }
         }
     });
 }]);
 
+app.filter('start', function () {
+    return function (input, start) {
+        if (!input || !input.length) { return; }
+
+        start = +start;
+        return input.slice(start);
+    };
+});
 // typeahead code
 
 var secretEmptyKey = '[$empty$]'
@@ -88,4 +112,5 @@ app.directive('emptyTypeahead', function () {
         }
     }
 })
+
 

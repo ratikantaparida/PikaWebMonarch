@@ -1,0 +1,219 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-ng-app="AngularAuthApp">
+<head>
+    <style>
+        /* Loading Spinner */
+        .spinner {
+            margin: 0;
+            width: 70px;
+            height: 18px;
+            margin: -35px 0 0 -9px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            text-align: center
+        }
+
+            .spinner > div {
+                width: 18px;
+                height: 18px;
+                background-color: #333;
+                border-radius: 100%;
+                display: inline-block;
+                -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+                animation: bouncedelay 1.4s infinite ease-in-out;
+                -webkit-animation-fill-mode: both;
+                animation-fill-mode: both
+            }
+
+            .spinner .bounce1 {
+                -webkit-animation-delay: -.32s;
+                animation-delay: -.32s
+            }
+
+            .spinner .bounce2 {
+                -webkit-animation-delay: -.16s;
+                animation-delay: -.16s
+            }
+
+        @-webkit-keyframes bouncedelay {
+            0%,80%,100% {
+                -webkit-transform: scale(0.0)
+            }
+
+            40% {
+                -webkit-transform: scale(1.0)
+            }
+        }
+
+        @keyframes bouncedelay {
+            0%,80%,100% {
+                transform: scale(0.0);
+                -webkit-transform: scale(0.0)
+            }
+
+            40% {
+                transform: scale(1.0);
+                -webkit-transform: scale(1.0)
+            }
+        }
+    </style>
+    <meta charset="UTF-8">
+    <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
+    <title> Pika Web Login  </title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Favicons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/images/icons/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/images/icons/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/images/icons/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/images/icons/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="img/Pika.png">
+
+    <link rel="stylesheet" type="text/css" href="assets/bootstrap/css/bootstrap.css">
+
+    <!-- HELPERS -->
+    <link rel="stylesheet" type="text/css" href="assets/helpers/animate.css">
+    <link rel="stylesheet" type="text/css" href="assets/helpers/backgrounds.css">
+    <link rel="stylesheet" type="text/css" href="assets/helpers/boilerplate.css">
+    <link rel="stylesheet" type="text/css" href="assets/helpers/border-radius.css">
+    <link rel="stylesheet" type="text/css" href="assets/helpers/grid.css">
+    <link rel="stylesheet" type="text/css" href="assets/helpers/page-transitions.css">
+    <link rel="stylesheet" type="text/css" href="assets/helpers/spacing.css">
+    <link rel="stylesheet" type="text/css" href="assets/helpers/typography.css">
+    <link rel="stylesheet" type="text/css" href="assets/helpers/utils.css">
+    <link rel="stylesheet" type="text/css" href="assets/helpers/colors.css">
+    <!-- ELEMENTS -->
+    <link rel="stylesheet" type="text/css" href="assets/elements/badges.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/buttons.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/content-box.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/dashboard-box.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/forms.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/loading-indicators.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/panel-box.css">
+
+    <!-- ICONS -->
+    <link rel="stylesheet" type="text/css" href="assets/icons/fontawesome/fontawesome.css">
+    <link rel="stylesheet" type="text/css" href="assets/icons/linecons/linecons.css">
+    <link rel="stylesheet" type="text/css" href="assets/icons/spinnericon/spinnericon.css">
+
+    <!-- Admin theme -->
+    <link rel="stylesheet" type="text/css" href="assets/themes/admin/layout.css">
+    <link rel="stylesheet" type="text/css" href="assets/themes/admin/color-schemes/default.css">
+    <!-- Components theme -->
+    <link rel="stylesheet" type="text/css" href="assets/themes/components/default.css">
+    <link rel="stylesheet" type="text/css" href="assets/themes/components/border-radius.css">
+    <!-- Admin responsive -->
+    <link rel="stylesheet" type="text/css" href="assets/helpers/responsive-elements.css">
+    <link rel="stylesheet" type="text/css" href="assets/helpers/admin-responsive.css">
+    <!-- JS Core -->
+    <script type="text/javascript" src="assets/js-core/jquery-core.js"></script>
+    <script type="text/javascript" src="assets/js-core/jquery-ui-core.js"></script>
+    <script type="text/javascript" src="assets/js-core/jquery-ui-widget.js"></script>
+    <script type="text/javascript" src="assets/js-core/jquery-ui-mouse.js"></script>
+    <script type="text/javascript" src="assets/js-core/jquery-ui-position.js"></script>
+    <!--<script type="text/javascript" src="assets/js-core/transition.js"></script>-->
+    <script type="text/javascript" src="assets/js-core/modernizr.js"></script>
+    <script type="text/javascript" src="assets/js-core/jquery-cookie.js"></script>
+
+    <link href="css/angular-busy.min.css" rel="stylesheet" />
+    <link href="css/loading-bar.css" rel="stylesheet" />
+    <script type="text/javascript">
+        $(window).load(function () {
+            setTimeout(function () {
+                $('#loading').fadeOut(400, "linear");
+            }, 300);
+        });
+    </script>
+
+</head>
+<body>
+    <div id="loading">
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div>
+    <style type="text/css">
+        html, body {
+            height: 100%;
+            background: #fff;
+        }
+    </style>
+    <div class="center-vertical" ng-controller="loginController">
+        <div class="center-content row">
+            <form class="col-md-4 col-sm-5 col-xs-11 col-lg-3 center-margin" id="businessForm" name="businessForm" role="form">
+                <h3 class="text-center pad25B font-gray text-transform-upr font-size-23">Pika Web Admin <span class="opacity-80">v1.0</span></h3>
+                <div id="login-form" class="content-box bg-default" cg-busy="{promise:myPromise,message:busymsg,backdrop:true}">
+                    <div class="content-box-wrapper pad20A">
+                        <img class="mrg25B center-margin radius-all-100 display-block" style="width:180px" src="https://firebasestorage.googleapis.com/v0/b/pika-qa-d6c91.appspot.com/o/web_app%2FWeb-Image-Header.png?alt=media&token=32d39203-590d-44e3-b200-d4237cc3f499">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon addon-inside bg-gray">
+                                    <i class="glyph-icon icon-envelope-o"></i>
+                                </span>
+                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" ng-model="loginData.email" ng-minlength="5" ng-maxlength="20" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon addon-inside bg-gray">
+                                    <i class="glyph-icon icon-unlock-alt"></i>
+                                </span>
+                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" ng-model="loginData.password" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" ng-minlength="6" ng-maxlength="18">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-block btn-primary" ng-click="login();">Login</button>
+                        </div>
+                        <div class="row" style="text-align:center">
+                            <span class="bs-label label-warning">{{errMsg}}</span>
+                        </div>
+                        <div class="row">
+                            <div class="checkbox-primary col-md-6" style="height: 20px;">
+                                <label>
+                                    <input type="checkbox" id="loginCheckbox1" class="custom-checkbox">
+                                    Remember me
+                                </label>
+                            </div>
+                            <div class="text-right col-md-6">
+                                <a href="#" class="switch-button" switch-target="#login-forgot" switch-parent="#login-form" title="Recover password">Forgot your password?</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="login-forgot" class="content-box bg-default hide">
+                    <div class="content-box-wrapper pad20A">
+                        <div class="form-group">
+                            <label for="exampleInputEmail2">Email address:</label>
+                            <div class="input-group">
+                                <span class="input-group-addon addon-inside bg-gray">
+                                    <i class="glyph-icon icon-envelope-o"></i>
+                                </span>
+                                <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Enter email">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button-pane text-center">
+                        <button type="submit" class="btn btn-md btn-primary">Recover Password</button>
+                        <a href="#" class="btn btn-md btn-link switch-button" switch-target="#login-form" switch-parent="#login-forgot" title="Cancel">Cancel</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- WIDGETS -->
+    <script type="text/javascript" src="assets/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="assets/widgets/progressbar/progressbar.js"></script>
+
+    <!-- Javascripts Pika Web-->
+    <script type="text/javascript" src="js/angular.min.js"></script>
+
+    <script src="js/angular-busy.min.js"></script>
+    <script src="js/angular-local-storage.js"></script>
+    <script src="js/loading-bar.js"></script>
+    <!-- Load app main script -->
+    <script type="text/javascript" src="app/authapp.js"></script>
+</body>
+</html>
